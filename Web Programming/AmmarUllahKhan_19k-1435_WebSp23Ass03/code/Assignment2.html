@@ -1,0 +1,66 @@
+<html>
+    <form id="input-form">
+  <label for="a-input">a:</label>
+  <input type="number" id="a-input" required><br>
+
+  <label for="b-input">b:</label>
+  <input type="number" id="b-input" required><br>
+
+  <label for="c-input">c:</label>
+  <input type="number" id="c-input" required><br>
+
+  <button type="submit">Calculate</button>
+</form>
+
+<div id="result-container"></div>
+</html>
+
+<script>
+
+async function calculate(a, b, c) {
+  const aCube = await cube(a);
+  const bCube = await cube(b);
+  const cCube = await cube(c);
+  const a2b = await multiply(3 * a * a, b);
+  const a2c = await multiply(3 * a * a, c);
+  const b2a = await multiply(3 * b * b, a);
+  const b2c = await multiply(3 * b * b, c);
+  const c2a = await multiply(3 * c * c, a);
+  const c2b = await multiply(3 * c * c, b);
+  const abc = await multiply(6 * a * b * c);
+
+  const result = await add(aCube, bCube, cCube, a2b, a2c, b2a, b2c, c2a, c2b, abc);
+
+  return result;
+}
+
+async function cube(num) {
+  return num * num * num;
+}
+
+async function multiply(num1, num2) {
+  return num1 * num2;
+}
+
+async function add(...args) {
+  let result = 0;
+  for (let i = 0; i < args.length; i++) {
+    result += args[i];
+  }
+  return result;
+}
+document.getElementById("input-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  
+  const a = Number(document.getElementById("a-input").value);
+  const b = Number(document.getElementById("b-input").value);
+  const c = Number(document.getElementById("c-input").value);
+
+  const result1 = await calculate(a, b, c);
+
+  const resultContainer = document.getElementById("result-container");
+  resultContainer.textContent = `Result: ${result1}`;
+
+// example usage
+})
+</script>
